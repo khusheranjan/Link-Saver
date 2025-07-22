@@ -1,24 +1,36 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { hashPassword } from "../../utils/hashUtils";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(
-        u => u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
-            u.password === password
-        );
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
-    } else {
-      alert("Invalid credentials");
-    }
-  };
+  const handleLogin = async () => {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const hashedPassword = await hashPassword(password);
+
+  // Debug all users
+  console.log("Hashed input password:", hashedPassword);
+  console.log("Stored users:", users);
+
+  const user = users.find(
+    u =>
+      u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
+      u.password === hashedPassword
+  );
+
+  if (user) {
+    console.log("Match found:", user.password, hashedPassword);
+    localStorage.setItem("user", JSON.stringify(user));
+    navigate("/");
+  } else {
+    console.warn("Login failed: No matching user found.");
+    alert("Invalid credentials");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 px-4 transition-colors">

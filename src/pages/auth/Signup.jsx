@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { hashPassword } from "../../utils/hashUtils"; 
+
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     if (!Array.isArray(users)) {
-      localStorage.setItem("users", JSON.stringify([])); // reset if corrupted
+      localStorage.setItem("users", JSON.stringify([])); 
       alert("Corrupted user data. Try again.");
       return;
     }
@@ -19,14 +21,15 @@ export default function Signup() {
   if (userExists) {
     alert("User already exists");
   } else {
-    const newUser = { email, password };
+    const hashedPassword = await hashPassword(password);
+    const newUser = { email, password: hashedPassword };
     const updatedUsers = [...users, newUser];
 
     localStorage.setItem("users", JSON.stringify(updatedUsers));
     localStorage.setItem("user", JSON.stringify(newUser)); // auto-login
 
     alert("Signup successful. Welcome!");
-    navigate("/"); // redirect to bookmarks
+    navigate("/"); 
   }
   };
 
