@@ -16,14 +16,18 @@ export default function Signup() {
     }
 
     const userExists = users.find(u => u.email === email);
-    if (userExists) {
-      alert("User already exists");
-    } else {
-      users.push({ email, password });
-      localStorage.setItem("users", JSON.stringify(users));
-      alert("Signup successful. Please login.");
-      navigate("/login");
-    }
+  if (userExists) {
+    alert("User already exists");
+  } else {
+    const newUser = { email, password };
+    const updatedUsers = [...users, newUser];
+
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    localStorage.setItem("user", JSON.stringify(newUser)); // auto-login
+
+    alert("Signup successful. Welcome!");
+    navigate("/"); // redirect to bookmarks
+  }
   };
 
   return (

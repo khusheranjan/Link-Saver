@@ -8,7 +8,10 @@ export default function Login() {
 
   const handleLogin = () => {
     const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.email === email && u.password === password);
+    const user = users.find(
+        u => u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
+            u.password === password
+        );
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/");
