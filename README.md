@@ -43,11 +43,10 @@ npm run dev
 -  Fully responsive and mobile-friendly
 
 ## Time Spent
-~6–8 hours total
+~5–6 hours total
 - 1 hrs for design + layout
 - 2 hrs for authentication + encryption
 - 2 hrs for bookmarking + API integration
-- 1 hr for search, tag filter, and cleanup
 - 1 hr for unit tests
 
 ## What I'd Do Next
